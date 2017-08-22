@@ -2,7 +2,8 @@
 
 $(function() {
 
-    //Indention is a bit f*d up
+    // Font set up
+    // $("canvas").append("<link href='https://fonts.googleapis.com/css?family=" + FontName + "' rel='stylesheet' type='text/css'>");
 
     //Set animation frame
     window.requestAnimationFrame = window.requestAnimationFrame ||
@@ -10,11 +11,16 @@ $(function() {
         window.webkitRequestAnimationFrame ||
         window.msRequestAnimationFrame;
 
+    // Bubble colors (keep the order)
+    var color_red = ['57', '150', '27','246', '244'];
+    var color_green = ['90', '174', '156', '215', '42'];
+    var color_blue = ['154', '216', '27', '48', '12'];
 
     var canvas = $('#canvas')[0],
         ctx = canvas.getContext('2d'),
-        canvasW = $(document).width(),
-        canvasH = $(document).height();
+        canvasW = $(window).width(),
+        canvasH = $(window).height();
+
 
     ctx.fillStyle = 'rgb(255,255,255)';
 
@@ -39,13 +45,13 @@ $(function() {
     };
 
     var circle = {
-        radius: 400,
+        radius: canvasH*0.8,
         angle: 225
     };
 
     var particles = new Array();
 
-    var rate = 10,  // number of particle emitted per unit of time
+    var rate = 50,  // number of particle emitted per unit of time
         time = 0,
         frameIndex = rate;
 
@@ -58,11 +64,20 @@ $(function() {
 
     //Draw
     function draw() {
-
+        //
         ctx.globalCompositeOperation = 'source-out';
         ctx.fillStyle = 'rgb(255,255,255)';
         ctx.fillRect(0, 0, canvasW, canvasH);
+
+        // Covalent Capital Headline
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.font = "30px Arial";
+        ctx.fillStyle =  "black";
+        // ctx.lineWidth = 3;
+        ctx.fillText("Covalent Capital", canvasW/2, canvasH/2);
+
         ctx.globalCompositeOperation = 'lighten';
+
 
         //Move emitter
         emitter.dx = (canvasW/2+Math.cos(circle.angle)*circle.radius) - emitter.x;
@@ -80,10 +95,13 @@ $(function() {
 
             //Check if die
             if(time > p.die) {
-                p.o -= 0.01;
+                p.o -= 0.005;
                 if(p.o < 0) {
                     particles.splice(i, 1);
                 }
+            }
+            else{
+                particles.splice(i, 1);
             }
 
             //Add v
@@ -121,20 +139,23 @@ $(function() {
         if(randomTime > 0.5) {
             for (var i = 0; i < rate; i++) {
                 //Create particle
+                // choose color
+                var color_idx = Math.floor(Math.random() * color_blue.length);
+
                 var particle = {
                     x: emitter.x,
                     y: emitter.y,
                     r: Math.random() * 10,
                     vx: (Math.random() - 0.5),
                     vy: (Math.random() - 0.5),
-                    o: 1,
+                    o: 0.8,  // transparency
                     birth: time,
-                    die: time + (50 + Math.random() * 50),//1+1),
+                    die: time + (Math.random() * 5),//1+1),
                     sourcedx: emitter.dx,
                     sourcedy: emitter.dy,
-                    red: Math.round(Math.random() * 255),
-                    green: Math.round(Math.random() * 255),
-                    blue: Math.round(Math.random() * 255),
+                    red: color_red[color_idx],
+                    green: color_green[color_idx],
+                    blue: color_blue[color_idx],
                     simplexVal: 0,
                     simplexIndex: 0
                 };
@@ -563,4 +584,3 @@ $(function() {
     }
 
 })();
-
