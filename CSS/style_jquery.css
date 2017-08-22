@@ -1,0 +1,21 @@
+body{
+    color: black
+}
+canvas {
+/*Use this class when you want your content to be hidden*/
+.BeforeScroll {
+    height: 100%; /*Whatever you want*/
+    width: 100%; /*Whatever you want*/
+
+    display: block;
+    font-size: 40px;
+}
+
+/*Use this class when you want your content to be shown after some scroll*/
+.AfterScroll {
+    height: 100%; /*Whatever you want*/
+    width: 100%; /*Whatever you want*/
+
+    display: none;
+}
+}
